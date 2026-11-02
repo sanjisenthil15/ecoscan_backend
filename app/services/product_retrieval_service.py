@@ -47,8 +47,8 @@ class ProductRetrievalService:
             raw_product = dict(local_product)
             print(f"[BACKEND] Found barcode '{clean_barcode}' in {source_name}.")
 
-            # If local record lacks Agribalyse LCA data or nutriments, query live Open Food Facts v3 for the exact same barcode
-            if not local_product.get("ecoscore_data") or not local_product.get("nutriments") or not local_product.get("ingredients"):
+            # If local record lacks Agribalyse LCA data, score, nutriments, or ingredients, query live Open Food Facts v3 for the exact same barcode
+            if not local_product.get("ecoscore_data") or local_product.get("ecoscore_score") is None or not local_product.get("nutriments") or not local_product.get("ingredients"):
                 try:
                     external_product = OpenFoodFactsService.fetch_by_barcode(clean_barcode)
                     if external_product and external_product.get("barcode") == clean_barcode:
@@ -60,10 +60,18 @@ class ProductRetrievalService:
                             raw_product["ecoscore_grade"] = external_product["ecoscore_grade"]
                         if external_product.get("packaging") and not raw_product.get("packaging"):
                             raw_product["packaging"] = external_product["packaging"]
+                        if external_product.get("packagings") and not raw_product.get("packagings"):
+                            raw_product["packagings"] = external_product["packagings"]
                         if external_product.get("nutriments") and not raw_product.get("nutriments"):
                             raw_product["nutriments"] = external_product["nutriments"]
                         if external_product.get("ingredients") and not raw_product.get("ingredients"):
                             raw_product["ingredients"] = external_product["ingredients"]
+                        if external_product.get("nova_group") is not None and raw_product.get("nova_group") is None:
+                            raw_product["nova_group"] = external_product["nova_group"]
+                        if external_product.get("nutriscore_grade") and not raw_product.get("nutriscore_grade"):
+                            raw_product["nutriscore_grade"] = external_product["nutriscore_grade"]
+                        if external_product.get("nutriscore_score") is not None and raw_product.get("nutriscore_score") is None:
+                            raw_product["nutriscore_score"] = external_product["nutriscore_score"]
                         if external_product.get("allergens") and not raw_product.get("allergens"):
                             raw_product["allergens"] = external_product["allergens"]
                         if external_product.get("allergens_tags") and not raw_product.get("allergens_tags"):
@@ -163,6 +171,7 @@ class ProductRetrievalService:
             
             # Nutrition profile
             "nutriscore_grade": sustainability.get("nutriscore_grade") or "Not available",
+            "nutriscore_score": sustainability.get("nutriscore_score"),
             "nova_group": sustainability.get("nova_group"),
             "nutriments": nutriments_clean,
             
@@ -186,6 +195,7 @@ class ProductRetrievalService:
 
         nutrition_section = {
             "nutriscore_grade": sustainability.get("nutriscore_grade"),
+            "nutriscore_score": sustainability.get("nutriscore_score"),
             "nova_group": sustainability.get("nova_group"),
             "nutriments": nutriments_clean,
         }

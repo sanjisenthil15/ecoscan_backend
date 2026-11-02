@@ -30,7 +30,7 @@ class SustainabilityEngine:
     MODERATE_RECYCLABILITY_TERMS = [
         "pet", "hdpe", "ldpe", "polypropylene", "pp", "mono-layer", "monolayer",
         "plastic", "plastique", "kunststoff", "bouteille", "bottle", "tub", "tray",
-        "pouch", "sachet", "box", "boîte", "pot", "wrap"
+        "pouch", "sachet", "box", "boîte", "pot", "wrap", "bag", "packet", "wrapper", "film", "flowpack"
     ]
 
     LOW_RECYCLABILITY_TERMS = [
@@ -282,11 +282,15 @@ class SustainabilityEngine:
         # ==============================================================
         # 6. Nutri-Score & NOVA
         # ==============================================================
+        nutriscore_grade = None
         nutri = raw_product.get("nutriscore_grade") or raw_product.get("nutrition_grade")
         if nutri and str(nutri).strip().lower() in ["a", "b", "c", "d", "e"]:
             nutriscore_grade = str(nutri).strip().upper()
-        else:
-            nutriscore_grade = None
+        raw_nutri_score = raw_product.get("nutriscore_score") or (raw_product.get("nutriscore_data") or {}).get("score")
+        try:
+            nutriscore_score = int(raw_nutri_score) if raw_nutri_score is not None else None
+        except (ValueError, TypeError):
+            nutriscore_score = None
 
         nova = raw_product.get("nova_group")
         try:
@@ -307,5 +311,6 @@ class SustainabilityEngine:
             "vegan": vegan,
             "vegetarian": vegetarian,
             "nutriscore_grade": nutriscore_grade,
+            "nutriscore_score": nutriscore_score,
             "nova_group": nova_group
         }

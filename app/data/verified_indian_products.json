@@ -47,6 +47,24 @@
     ],
     "source": "Open Food Facts (Verified Indian Product)"
   },
+  "8901719112683": {
+    "barcode": "8901719112683",
+    "product_name": "Parle-G Original Gluco Biscuits",
+    "brand": "Parle",
+    "category": "Biscuits",
+    "quantity": "32 g",
+    "image_url": "https://images.openfoodfacts.org/images/products/890/171/911/2683/front_en.4.400.jpg",
+    "ecoscore_grade": null,
+    "ecoscore_score": null,
+    "nutriscore_grade": null,
+    "nova_group": null,
+    "packaging": "",
+    "ingredients_text": "",
+    "countries": [
+      "India"
+    ],
+    "source": "Open Food Facts (Verified Indian Product)"
+  },
   "8901719134845": {
     "barcode": "8901719134845",
     "product_name": "Parle-G Biscuit",

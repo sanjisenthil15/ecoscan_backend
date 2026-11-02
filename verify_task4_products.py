@@ -12,6 +12,7 @@ TARGET_BARCODES = [
     "8901725121181",
     "8901063016941",
     "8901058000269",
+    "8901719112683",
 ]
 
 def verify_all():
@@ -118,7 +119,7 @@ def verify_all():
     print(f"[OK] 0000000000000 correctly returned HTTP 404: {body_404['message']}")
 
     print("\n" + "=" * 80)
-    print("ALL 7 CORE PRODUCTS AND ERROR SCENARIOS COMPREHENSIVELY VERIFIED!")
+    print("ALL 8 TARGET PRODUCTS AND ERROR SCENARIOS COMPREHENSIVELY VERIFIED!")
     print("=" * 80)
 
 if __name__ == "__main__":

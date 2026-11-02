@@ -51,6 +51,22 @@ def test_parle_g():
     assert p["nova_group"] == 4
     print(f"[PASS] 8901719134845: {p['product_name']} | EcoScore: {p['eco_score']} (Grade {p['eco_score_grade']})")
 
+def test_parle_g_small_pack():
+    # 8901719112683 - Parle-G small pack (Distinct SKU from 8901719134845)
+    response = client.get("/product/8901719112683")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    p = data["product"]
+    assert p["barcode"] == "8901719112683"
+    assert "Parle" in p["product_name"] or "Parle" in p["brand"]
+    # Authentic lack of scores for this barcode: NO fabricated numbers!
+    assert p["eco_score"] is None
+    assert p["eco_score_grade"] is None
+    assert p["carbon_footprint_status"] == "unavailable"
+    assert "Product-specific water impact unavailable" in p["water_usage"]
+    print(f"[PASS] 8901719112683: {p['product_name']} | Distinct SKU verified without fabricated values")
+
 def test_kissan_ketchup():
     # 8901030699085 - Tomato Ketchup Kissan
     response = client.get("/product/8901030699085")
@@ -133,6 +149,7 @@ if __name__ == "__main__":
     test_maggi_product()
     test_maggi_noodles_variant()
     test_parle_g()
+    test_parle_g_small_pack()
     test_kissan_ketchup()
     test_aashirvaad_atta()
     test_britannia_classic()

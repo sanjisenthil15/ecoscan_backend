@@ -21,6 +21,7 @@ class SustainabilityDetails(BaseModel):
     vegetarian: Optional[bool] = None
     nova_group: Optional[int] = Field(None, description="NOVA food processing group (1-4)")
     nutriscore_grade: Optional[str] = None
+    nutriscore_score: Optional[int] = None
     ai_explanation: Optional[str] = None
     eco_tip: Optional[str] = None
     sustainable_alternative: Optional[str] = None
